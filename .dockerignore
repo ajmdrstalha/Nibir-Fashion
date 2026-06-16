@@ -1,0 +1,12 @@
+node_modules
+**/node_modules
+dist
+**/dist
+.git
+.cache
+.local
+downloads
+artifacts/desktop-shell/packaged
+artifacts/desktop-shell/build
+*.log
+*.tsbuildinfo

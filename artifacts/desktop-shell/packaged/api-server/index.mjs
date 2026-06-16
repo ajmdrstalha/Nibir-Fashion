@@ -28044,7 +28044,7 @@ var require_pino = __commonJS({
     function pinoBundlerAbsolutePath(p) {
       try {
         const path2 = __require("path");
-        const outputDir = "C:\\Users\\USERAS\\Documents\\Fashion-Admin-Panel\\artifacts\\api-server\\dist";
+        const outputDir = "C:\\Users\\USERAS\\Documents\\nibir-fashion\\artifacts\\api-server\\dist";
         return path2.resolve(outputDir, p.replace(/^\.\//, ""));
       } catch (e) {
         const f = new Function("p", "return new URL(p, import.meta.url).pathname");
@@ -49356,7 +49356,7 @@ function resolveDbFilePath() {
   if (process.env.SQLITE_DB_PATH) {
     return path.resolve(process.env.SQLITE_DB_PATH);
   }
-  return path.resolve(process.cwd(), "data", "fashion-admin.sqlite");
+  return path.resolve(process.cwd(), "data", "nibir-fashion.sqlite");
 }
 var sqliteFilePath = resolveDbFilePath();
 mkdirSync(path.dirname(sqliteFilePath), { recursive: true });

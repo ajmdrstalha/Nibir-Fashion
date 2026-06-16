@@ -9,6 +9,7 @@
 export interface SaleItem {
   id: number;
   saleId: number;
+  productId: number | null;
   name: string;
   size: string;
   qty: number;

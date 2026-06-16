@@ -1,0 +1,59 @@
+name: nibir-fashion
+
+services:
+  database:
+    image: postgres:16-alpine
+    container_name: nibir-fashion-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-nibir_fashion}
+      POSTGRES_USER: ${POSTGRES_USER:-fashion}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-fashion}
+    ports:
+      - "${POSTGRES_PORT:-12502}:5432"
+    volumes:
+      - nibir_fashion_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-fashion} -d ${POSTGRES_DB:-nibir_fashion}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build:
+      context: .
+      dockerfile: artifacts/api-server/Dockerfile
+    container_name: nibir-fashion-backend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      PORT: 12501
+      DATABASE_URL: postgres://${POSTGRES_USER:-fashion}:${POSTGRES_PASSWORD:-fashion}@database:5432/${POSTGRES_DB:-nibir_fashion}
+      JWT_SECRET: ${JWT_SECRET:-change-this-local-dev-secret}
+      DEFAULT_ADMIN_EMAIL: ${DEFAULT_ADMIN_EMAIL:-admin@example.com}
+      DEFAULT_ADMIN_PASSWORD: ${DEFAULT_ADMIN_PASSWORD:-Admin@12345}
+    ports:
+      - "${BACKEND_PORT:-12501}:12501"
+    depends_on:
+      database:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: .
+      dockerfile: artifacts/nibir-fashion/Dockerfile
+    container_name: nibir-fashion-frontend
+    restart: unless-stopped
+    environment:
+      NODE_ENV: development
+      PORT: 12500
+      API_TARGET: http://backend:12501
+      VITE_API_BASE_URL: http://localhost:12501
+    ports:
+      - "${FRONTEND_PORT:-12500}:12500"
+    depends_on:
+      - backend
+
+volumes:
+  nibir_fashion_postgres_data:
+    name: nibir_fashion_postgres_data

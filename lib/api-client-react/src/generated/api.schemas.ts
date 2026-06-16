@@ -12,6 +12,7 @@ export interface HealthStatus {
 export interface SaleItem {
   id: number;
   saleId: number;
+  productId: number | null;
   name: string;
   size: string;
   qty: number;
@@ -36,6 +37,7 @@ export interface Sale {
 
 export interface CreateSaleItemBody {
   name: string;
+  productId: number;
   size: string;
   qty: number;
   rate: number;
@@ -71,6 +73,12 @@ export interface Product {
   size: string;
   price: number;
   stock: number;
+  currentStock: number;
+  totalStockIn: number;
+  totalSold: number;
+  current_stock: number;
+  total_stock_in: number;
+  total_sold: number;
   createdAt: string;
 }
 

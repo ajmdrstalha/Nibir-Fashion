@@ -1,14 +1,14 @@
 import { defineConfig } from "drizzle-kit";
 import path from "path";
 
-const sqlitePath = process.env.SQLITE_DB_PATH
-  ? path.resolve(process.env.SQLITE_DB_PATH)
-  : path.resolve(process.cwd(), "data", "fashion-admin.sqlite");
+const databaseUrl =
+  process.env.DATABASE_URL ??
+  "postgres://fashion:fashion@localhost:12502/nibir_fashion";
 
 export default defineConfig({
   schema: path.join(__dirname, "./src/schema/index.ts"),
-  dialect: "sqlite",
+  dialect: "postgresql",
   dbCredentials: {
-    url: sqlitePath,
+    url: databaseUrl,
   },
 });

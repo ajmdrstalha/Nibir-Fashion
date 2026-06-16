@@ -1,6 +1,6 @@
 import { Router, type IRouter } from "express";
 import { eq, and, sql } from "drizzle-orm";
-import { db, salesTable, saleItemsTable } from "@workspace/db";
+import { db, productsTable, salesTable, saleItemsTable, stockMovementsTable } from "@workspace/db";
 import {
   ListSalesQueryParams,
   CreateSaleBody,
@@ -12,6 +12,13 @@ import {
 const router: IRouter = Router();
 type SaleRow = typeof salesTable.$inferSelect;
 type SaleItemRow = typeof saleItemsTable.$inferSelect;
+type DbTransaction = Parameters<Parameters<typeof db.transaction>[0]>[0];
+
+class NotEnoughStockError extends Error {
+  constructor() {
+    super("Not enough stock available");
+  }
+}
 
 function pad(n: number) {
   return String(n).padStart(2, "0");
@@ -87,6 +94,7 @@ router.get("/sales", async (req, res): Promise<void> => {
         total: parseFloat(String(sale.total)),
         items: items.map((i: SaleItemRow) => ({
           ...i,
+          productId: i.productId,
           rate: parseFloat(String(i.rate)),
           amount: parseFloat(String(i.amount)),
         })),
@@ -98,47 +106,113 @@ router.get("/sales", async (req, res): Promise<void> => {
 });
 
 router.post("/sales", async (req, res): Promise<void> => {
-  const parsed = CreateSaleBody.safeParse(req.body);
-  if (!parsed.success) {
-    req.log.warn({ errors: parsed.error.message }, "Invalid sale body");
-    res.status(400).json({ error: parsed.error.message });
-    return;
+  try {
+    const parsed = CreateSaleBody.safeParse(req.body);
+    if (!parsed.success) {
+      req.log.warn({ errors: parsed.error.message }, "Invalid sale body");
+      res.status(400).json({ error: parsed.error.message });
+      return;
+    }
+
+    const { items, ...saleData } = parsed.data;
+    const total = items.reduce((s: number, i: { qty: number; rate: number }) => s + i.qty * i.rate, 0);
+
+    const result = await db.transaction(async (tx: DbTransaction) => {
+      const quantitiesByProduct = new Map<number, number>();
+
+      for (const item of items) {
+        if (!item.productId) {
+          throw new NotEnoughStockError();
+        }
+
+        quantitiesByProduct.set(
+          item.productId,
+          (quantitiesByProduct.get(item.productId) ?? 0) + item.qty,
+        );
+      }
+
+      for (const [productId, quantity] of quantitiesByProduct) {
+        const [product] = await tx
+          .select()
+          .from(productsTable)
+          .where(eq(productsTable.id, productId));
+
+        if (!product || product.currentStock < quantity) {
+          throw new NotEnoughStockError();
+        }
+      }
+
+      const [sale] = await tx
+        .insert(salesTable)
+        .values({
+          ...saleData,
+          total,
+        })
+        .returning();
+
+      const insertedItems = await tx
+        .insert(saleItemsTable)
+        .values(
+          items.map((i: { name: string; productId: number; size: string; qty: number; rate: number }) => ({
+            saleId: sale.id,
+            productId: i.productId,
+            name: i.name,
+            size: i.size,
+            qty: i.qty,
+            rate: i.rate,
+            amount: i.qty * i.rate,
+          }))
+        )
+        .returning();
+
+      for (const [productId, quantity] of quantitiesByProduct) {
+        const [product] = await tx
+          .update(productsTable)
+          .set({
+            stock: sql`${productsTable.stock} - ${quantity}`,
+            currentStock: sql`${productsTable.currentStock} - ${quantity}`,
+            totalSold: sql`${productsTable.totalSold} + ${quantity}`,
+          })
+          .where(sql`${productsTable.id} = ${productId} AND ${productsTable.currentStock} >= ${quantity}`)
+          .returning();
+
+        if (!product) {
+          throw new NotEnoughStockError();
+        }
+
+        await tx.insert(stockMovementsTable).values({
+          productId,
+          type: "OUT",
+          quantity,
+          reason: "sale",
+          saleId: sale.id,
+          createdBy: res.locals.user?.id ?? null,
+          note: sale.billNo,
+        });
+      }
+
+      return { sale, insertedItems };
+    });
+
+    res.status(201).json({
+      ...result.sale,
+      total: parseFloat(String(result.sale.total)),
+      items: result.insertedItems.map((i: SaleItemRow) => ({
+        ...i,
+        productId: i.productId,
+        rate: parseFloat(String(i.rate)),
+        amount: parseFloat(String(i.amount)),
+      })),
+    });
+  } catch (err) {
+    if (err instanceof NotEnoughStockError) {
+      res.status(400).json({ error: "Not enough stock available" });
+      return;
+    }
+
+    req.log.error({ err, body: req.body }, "Failed to insert sale");
+    res.status(500).json({ error: "Failed to save sale" });
   }
-
-  const { items, ...saleData } = parsed.data;
-  const total = items.reduce((s: number, i: { qty: number; rate: number }) => s + i.qty * i.rate, 0);
-
-  const [sale] = await db
-    .insert(salesTable)
-    .values({
-      ...saleData,
-      total,
-    })
-    .returning();
-
-  const insertedItems = await db
-    .insert(saleItemsTable)
-    .values(
-      items.map((i: { name: string; size: string; qty: number; rate: number }) => ({
-        saleId: sale.id,
-        name: i.name,
-        size: i.size,
-        qty: i.qty,
-        rate: i.rate,
-        amount: i.qty * i.rate,
-      }))
-    )
-    .returning();
-
-  res.status(201).json({
-    ...sale,
-    total: parseFloat(String(sale.total)),
-    items: insertedItems.map((i: SaleItemRow) => ({
-      ...i,
-      rate: parseFloat(String(i.rate)),
-      amount: parseFloat(String(i.amount)),
-    })),
-  });
 });
 
 router.get("/sales/:id", async (req, res): Promise<void> => {
@@ -168,6 +242,7 @@ router.get("/sales/:id", async (req, res): Promise<void> => {
     total: parseFloat(String(sale.total)),
     items: items.map((i: SaleItemRow) => ({
       ...i,
+      productId: i.productId,
       rate: parseFloat(String(i.rate)),
       amount: parseFloat(String(i.amount)),
     })),
@@ -175,23 +250,28 @@ router.get("/sales/:id", async (req, res): Promise<void> => {
 });
 
 router.delete("/sales/:id", async (req, res): Promise<void> => {
-  const params = DeleteSaleParams.safeParse(req.params);
-  if (!params.success) {
-    res.status(400).json({ error: "Invalid id" });
-    return;
+  try {
+    const params = DeleteSaleParams.safeParse(req.params);
+    if (!params.success) {
+      res.status(400).json({ error: "Invalid id" });
+      return;
+    }
+
+    const [sale] = await db
+      .delete(salesTable)
+      .where(eq(salesTable.id, params.data.id))
+      .returning();
+
+    if (!sale) {
+      res.status(404).json({ error: "Sale not found" });
+      return;
+    }
+
+    res.sendStatus(204);
+  } catch (err) {
+    req.log.error({ err, saleId: req.params.id }, "Failed to delete sale");
+    res.status(500).json({ error: "Failed to delete sale" });
   }
-
-  const [sale] = await db
-    .delete(salesTable)
-    .where(eq(salesTable.id, params.data.id))
-    .returning();
-
-  if (!sale) {
-    res.status(404).json({ error: "Sale not found" });
-    return;
-  }
-
-  res.sendStatus(204);
 });
 
 export default router;

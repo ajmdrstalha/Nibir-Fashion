@@ -1,5 +1,5 @@
-appId: com.sdfashion.admin
-productName: SD Fashion Admin
+appId: com.nibirfashion.admin
+productName: Nibir-Fashion
 npmRebuild: false
 nodeGypRebuild: false
 files:

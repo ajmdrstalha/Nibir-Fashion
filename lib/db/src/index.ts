@@ -1,37 +1,49 @@
-import path from "node:path";
-import { mkdirSync } from "node:fs";
-import Database from "better-sqlite3";
-import { drizzle } from "drizzle-orm/better-sqlite3";
+import { Pool } from "pg";
+import { drizzle } from "drizzle-orm/node-postgres";
+import bcrypt from "bcryptjs";
 import * as schema from "./schema";
 
-function resolveDbFilePath() {
-  if (process.env.SQLITE_DB_PATH) {
-    return path.resolve(process.env.SQLITE_DB_PATH);
-  }
+const databaseUrl = process.env.DATABASE_URL;
 
-  return path.resolve(process.cwd(), "data", "fashion-admin.sqlite");
+if (!databaseUrl) {
+  throw new Error("DATABASE_URL environment variable is required.");
 }
 
-export const sqliteFilePath = resolveDbFilePath();
-mkdirSync(path.dirname(sqliteFilePath), { recursive: true });
+export const pool = new Pool({
+  connectionString: databaseUrl,
+});
 
-const sqlite = new Database(sqliteFilePath);
-sqlite.pragma("journal_mode = WAL");
-sqlite.pragma("foreign_keys = ON");
+export const db = drizzle(pool, { schema });
 
-sqlite.exec(`
+// Web development and VPS deployments use PostgreSQL. The backend waits for this
+// promise before listening so a fresh Docker volume is ready on first startup.
+export const ready = (async () => {
+  await pool.query(`
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  email TEXT NOT NULL UNIQUE,
+  password_hash TEXT NOT NULL,
+  name TEXT NOT NULL DEFAULT 'Administrator',
+  role TEXT NOT NULL DEFAULT 'admin',
+  active BOOLEAN NOT NULL DEFAULT TRUE,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS products (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  id SERIAL PRIMARY KEY,
   name TEXT NOT NULL,
   category TEXT NOT NULL DEFAULT 'General',
   size TEXT NOT NULL DEFAULT '-',
   price REAL NOT NULL DEFAULT 0,
   stock INTEGER NOT NULL DEFAULT 0,
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+  current_stock INTEGER NOT NULL DEFAULT 0,
+  total_stock_in INTEGER NOT NULL DEFAULT 0,
+  total_sold INTEGER NOT NULL DEFAULT 0,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS sales (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  id SERIAL PRIMARY KEY,
   bill_no TEXT NOT NULL,
   date TEXT NOT NULL,
   customer TEXT NOT NULL,
@@ -39,12 +51,13 @@ CREATE TABLE IF NOT EXISTS sales (
   note TEXT,
   payment_method TEXT NOT NULL DEFAULT 'Cash',
   total REAL NOT NULL DEFAULT 0,
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS sale_items (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  id SERIAL PRIMARY KEY,
   sale_id INTEGER NOT NULL,
+  product_id INTEGER,
   name TEXT NOT NULL,
   size TEXT NOT NULL DEFAULT '-',
   qty INTEGER NOT NULL DEFAULT 1,
@@ -52,8 +65,59 @@ CREATE TABLE IF NOT EXISTS sale_items (
   amount REAL NOT NULL DEFAULT 0,
   FOREIGN KEY (sale_id) REFERENCES sales(id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS stock_movements (
+  id SERIAL PRIMARY KEY,
+  product_id INTEGER NOT NULL REFERENCES products(id) ON DELETE CASCADE,
+  type TEXT NOT NULL CHECK (type IN ('IN', 'OUT')),
+  quantity INTEGER NOT NULL CHECK (quantity > 0),
+  reason TEXT NOT NULL CHECK (reason IN ('purchase', 'sale', 'adjustment', 'return', 'manual')),
+  sale_id INTEGER REFERENCES sales(id) ON DELETE SET NULL,
+  created_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+  note TEXT,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 `);
 
-export const db = drizzle(sqlite, { schema });
+  await pool.query(`
+ALTER TABLE products ADD COLUMN IF NOT EXISTS current_stock INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS total_stock_in INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE products ADD COLUMN IF NOT EXISTS total_sold INTEGER NOT NULL DEFAULT 0;
+ALTER TABLE sale_items ADD COLUMN IF NOT EXISTS product_id INTEGER;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS active BOOLEAN NOT NULL DEFAULT TRUE;
+
+UPDATE products
+SET
+  current_stock = CASE WHEN current_stock = 0 AND stock > 0 THEN stock ELSE current_stock END,
+  total_stock_in = CASE WHEN total_stock_in = 0 AND stock > 0 THEN stock ELSE total_stock_in END
+WHERE stock > 0;
+
+UPDATE products
+SET stock = current_stock
+WHERE stock <> current_stock;
+
+INSERT INTO stock_movements (product_id, type, quantity, reason, note)
+SELECT id, 'IN', total_stock_in, 'manual', 'Opening stock imported during PostgreSQL stock migration'
+FROM products p
+WHERE p.total_stock_in > 0
+  AND NOT EXISTS (
+    SELECT 1 FROM stock_movements sm WHERE sm.product_id = p.id
+  );
+`);
+
+  const countResult = await pool.query<{ count: string }>("SELECT COUNT(*) AS count FROM users");
+  const userCount = Number(countResult.rows[0]?.count ?? 0);
+
+  if (userCount === 0) {
+    const email = process.env.DEFAULT_ADMIN_EMAIL ?? "admin@example.com";
+    const password = process.env.DEFAULT_ADMIN_PASSWORD ?? "Admin@12345";
+    const passwordHash = await bcrypt.hash(password, 12);
+
+    await pool.query(
+      "INSERT INTO users (email, password_hash, name, role) VALUES ($1, $2, $3, $4)",
+      [email.toLowerCase(), passwordHash, "Administrator", "admin"],
+    );
+  }
+})();
 
 export * from "./schema";

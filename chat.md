@@ -1,8 +1,8 @@
 # Chat Summary
 
 ## Overview
-- Goal: Convert the SD Fashion Admin app into a standalone Windows installer (.exe) with local SQLite storage and working UI.
-- Workspace: Monorepo with frontend (artifacts/sd-fashion), backend (artifacts/api-server), desktop shell (artifacts/desktop-shell), and shared libs.
+- Goal: Convert the Nibir-Fashion app into a standalone Windows installer (.exe) with local SQLite storage and working UI.
+- Workspace: Monorepo with frontend (artifacts/nibir-fashion), backend (artifacts/api-server), desktop shell (artifacts/desktop-shell), and shared libs.
 
 ## Major Fixes and Changes
 
@@ -44,13 +44,13 @@
 - Added date picker next to search in Sales History for date filtering.
 
 ## Key Files Edited
-- artifacts/sd-fashion/src/pages/Dashboard.tsx (array guards)
-- artifacts/sd-fashion/src/pages/NewSale.tsx (Amount column removal)
-- artifacts/sd-fashion/src/pages/SalesHistory.tsx (date filter)
-- artifacts/sd-fashion/src/pages/Products.tsx (save flow checks)
-- artifacts/sd-fashion/src/App.tsx (hash routing on file protocol)
-- artifacts/sd-fashion/vite.config.ts (base path / proxy settings)
-- artifacts/sd-fashion/src/components/Layout.tsx (backup/restore UI)
+- artifacts/nibir-fashion/src/pages/Dashboard.tsx (array guards)
+- artifacts/nibir-fashion/src/pages/NewSale.tsx (Amount column removal)
+- artifacts/nibir-fashion/src/pages/SalesHistory.tsx (date filter)
+- artifacts/nibir-fashion/src/pages/Products.tsx (save flow checks)
+- artifacts/nibir-fashion/src/App.tsx (hash routing on file protocol)
+- artifacts/nibir-fashion/vite.config.ts (base path / proxy settings)
+- artifacts/nibir-fashion/src/components/Layout.tsx (backup/restore UI)
 - artifacts/api-server/src/routes/backup.ts (backup/restore)
 - artifacts/api-server/src/routes/products.ts (sqlite-safe parsing)
 - artifacts/api-server/build.mjs (sqlite externalization toggles)
@@ -61,14 +61,14 @@
 - artifacts/desktop-shell/package.json (scripts, deps, packaging copy)
 
 ## Build/Installer Output
-- Latest installer: artifacts/desktop-shell/dist/SD Fashion Admin Setup 0.1.0.exe
+- Latest installer: artifacts/desktop-shell/dist/Nibir-Fashion Setup 0.1.0.exe
 - Expected size around 110+ MB after native module inclusion.
 
 ## Build Steps (handoff)
 1. Ensure Python 3.12 and VS Build Tools (C++ + Windows SDK) are installed.
 2. Rebuild sqlite native addon for Electron (already done in this workspace).
 3. Run: pnpm --filter @workspace/desktop-shell dist
-4. Installer output: artifacts/desktop-shell/dist/SD Fashion Admin Setup 0.1.0.exe
+4. Installer output: artifacts/desktop-shell/dist/Nibir-Fashion Setup 0.1.0.exe
 
 ## New PC Build Prerequisites
 - Node.js (v22.x used here)
@@ -89,12 +89,12 @@
 	 - pnpm --filter @workspace/desktop-shell dist
 
 ## Key Build Commands
-- Frontend only: pnpm --filter @workspace/sd-fashion build
+- Frontend only: pnpm --filter @workspace/nibir-fashion build
 - API only: pnpm --filter @workspace/api-server build
 - Desktop installer: pnpm --filter @workspace/desktop-shell dist
 
 ## Runtime Paths
-- SQLite DB: %APPDATA%\@workspace\desktop-shell\fashion-admin.sqlite
+- SQLite DB: %APPDATA%\@workspace\desktop-shell\nibir-fashion.sqlite
 - Logs: %APPDATA%\@workspace\desktop-shell\startup-error.log
 				 %APPDATA%\@workspace\desktop-shell\frontend-load-error.log
 				 %APPDATA%\@workspace\desktop-shell\backend-error.log
@@ -123,7 +123,7 @@
 - artifacts/desktop-shell/build
 - artifacts/desktop-shell/packaged
 - artifacts/api-server/dist
-- artifacts/sd-fashion/dist
+- artifacts/nibir-fashion/dist
 - Keep artifacts/desktop-shell/dist if you want to preserve the latest installer.
 
 ## Why Product Save Failed (root cause)
@@ -280,8 +280,8 @@ Now what you need to do (one time):
 ## Backup Button Fix (file:// runtime)
 - Backup failed because the app is loaded from file:// and the Backup button was calling /api/backup relative to that file URL.
 - Fixed to call the local API (http://127.0.0.1:3001) when running from file mode.
-- Change made in artifacts/sd-fashion/src/components/Layout.tsx (lines ~115-170).
-- New installer built: artifacts/desktop-shell/dist/SD Fashion Admin Setup 0.1.0.exe
+- Change made in artifacts/nibir-fashion/src/components/Layout.tsx (lines ~115-170).
+- New installer built: artifacts/desktop-shell/dist/Nibir-Fashion Setup 0.1.0.exe
 
 >>>>>>> f3e0995 (Full workspace update: bugfixes, backup/restore API fix, build artifacts, chat.md summary. See chat.md for details.)
 Open Visual Studio Installer and go to Build Tools 2022 and click Modify

@@ -13,5 +13,11 @@ export interface Product {
   size: string;
   price: number;
   stock: number;
+  currentStock: number;
+  totalStockIn: number;
+  totalSold: number;
+  current_stock: number;
+  total_stock_in: number;
+  total_sold: number;
   createdAt: string;
 }

@@ -8,6 +8,7 @@
 
 export interface CreateSaleItemBody {
   name: string;
+  productId: number;
   size: string;
   qty: number;
   rate: number;

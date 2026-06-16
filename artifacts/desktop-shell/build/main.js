@@ -50,7 +50,7 @@ function startBackend() {
         return;
     }
     const userDataDir = electron_1.app.getPath("userData");
-    const dbPath = node_path_1.default.join(userDataDir, "fashion-admin.sqlite");
+    const dbPath = node_path_1.default.join(userDataDir, "nibir-fashion.sqlite");
     const backendLogPath = node_path_1.default.join(userDataDir, "backend-error.log");
     const packagedNodeModules = node_path_1.default.resolve(electron_1.app.getAppPath(), "node_modules");
     const nodePath = process.env.NODE_PATH
@@ -101,10 +101,10 @@ function createMainWindow() {
     });
     if (electron_1.app.isPackaged) {
         const entry = firstExistingPath([
-            node_path_1.default.resolve(process.resourcesPath, "packaged", "sd-fashion", "index.html"),
-            node_path_1.default.resolve(electron_1.app.getAppPath(), "packaged", "sd-fashion", "index.html"),
-            node_path_1.default.resolve(electron_1.app.getAppPath(), "sd-fashion", "dist", "public", "index.html"),
-            node_path_1.default.resolve(electron_1.app.getAppPath(), "artifacts", "sd-fashion", "dist", "public", "index.html"),
+            node_path_1.default.resolve(process.resourcesPath, "packaged", "nibir-fashion", "index.html"),
+            node_path_1.default.resolve(electron_1.app.getAppPath(), "packaged", "nibir-fashion", "index.html"),
+            node_path_1.default.resolve(electron_1.app.getAppPath(), "nibir-fashion", "dist", "public", "index.html"),
+            node_path_1.default.resolve(electron_1.app.getAppPath(), "artifacts", "nibir-fashion", "dist", "public", "index.html"),
         ]);
         if (!entry) {
             const errorPath = node_path_1.default.join(electron_1.app.getPath("userData"), "frontend-load-error.log");

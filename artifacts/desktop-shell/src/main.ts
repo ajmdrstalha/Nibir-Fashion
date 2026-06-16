@@ -52,7 +52,7 @@ function startBackend() {
   }
 
   const userDataDir = app.getPath("userData");
-  const dbPath = path.join(userDataDir, "fashion-admin.sqlite");
+  const dbPath = path.join(userDataDir, "nibir-fashion.sqlite");
   const backendLogPath = path.join(userDataDir, "backend-error.log");
   const packagedNodeModules = path.resolve(app.getAppPath(), "node_modules");
   const nodePath = process.env.NODE_PATH
@@ -124,10 +124,10 @@ function createMainWindow() {
 
   if (app.isPackaged) {
     const entry = firstExistingPath([
-      path.resolve(process.resourcesPath, "packaged", "sd-fashion", "index.html"),
-      path.resolve(app.getAppPath(), "packaged", "sd-fashion", "index.html"),
-      path.resolve(app.getAppPath(), "sd-fashion", "dist", "public", "index.html"),
-      path.resolve(app.getAppPath(), "artifacts", "sd-fashion", "dist", "public", "index.html"),
+      path.resolve(process.resourcesPath, "packaged", "nibir-fashion", "index.html"),
+      path.resolve(app.getAppPath(), "packaged", "nibir-fashion", "index.html"),
+      path.resolve(app.getAppPath(), "nibir-fashion", "dist", "public", "index.html"),
+      path.resolve(app.getAppPath(), "artifacts", "nibir-fashion", "dist", "public", "index.html"),
     ]);
 
     if (!entry) {

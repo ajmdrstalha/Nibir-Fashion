@@ -1,10 +1,9 @@
-import { sqliteTable, integer, text, real } from "drizzle-orm/sqlite-core";
-import { sql } from "drizzle-orm";
+import { integer, pgTable, real, serial, text, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod/v4";
 
-export const salesTable = sqliteTable("sales", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const salesTable = pgTable("sales", {
+  id: serial("id").primaryKey(),
   billNo: text("bill_no").notNull(),
   date: text("date").notNull(),
   customer: text("customer").notNull(),
@@ -12,14 +11,15 @@ export const salesTable = sqliteTable("sales", {
   note: text("note"),
   paymentMethod: text("payment_method").notNull().default("Cash"),
   total: real("total").notNull().default(0),
-  createdAt: text("created_at").notNull().default(sql`CURRENT_TIMESTAMP`),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
 });
 
-export const saleItemsTable = sqliteTable("sale_items", {
-  id: integer("id").primaryKey({ autoIncrement: true }),
+export const saleItemsTable = pgTable("sale_items", {
+  id: serial("id").primaryKey(),
   saleId: integer("sale_id")
     .notNull()
     .references(() => salesTable.id, { onDelete: "cascade" }),
+  productId: integer("product_id"),
   name: text("name").notNull(),
   size: text("size").notNull().default("-"),
   qty: integer("qty").notNull().default(1),

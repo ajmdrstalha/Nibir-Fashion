@@ -38,6 +38,7 @@ export const ListSalesResponseItem = zod.object({
     zod.object({
       id: zod.number(),
       saleId: zod.number(),
+      productId: zod.number().nullable(),
       name: zod.string(),
       size: zod.string(),
       qty: zod.number(),
@@ -61,6 +62,7 @@ export const CreateSaleBody = zod.object({
   items: zod.array(
     zod.object({
       name: zod.string(),
+      productId: zod.number(),
       size: zod.string(),
       qty: zod.number(),
       rate: zod.number(),
@@ -119,6 +121,7 @@ export const GetSaleResponse = zod.object({
     zod.object({
       id: zod.number(),
       saleId: zod.number(),
+      productId: zod.number().nullable(),
       name: zod.string(),
       size: zod.string(),
       qty: zod.number(),
@@ -145,6 +148,12 @@ export const ListProductsResponseItem = zod.object({
   size: zod.string(),
   price: zod.number(),
   stock: zod.number(),
+  currentStock: zod.number(),
+  totalStockIn: zod.number(),
+  totalSold: zod.number(),
+  current_stock: zod.number(),
+  total_stock_in: zod.number(),
+  total_sold: zod.number(),
   createdAt: zod.string(),
 });
 export const ListProductsResponse = zod.array(ListProductsResponseItem);
@@ -182,6 +191,12 @@ export const UpdateProductResponse = zod.object({
   size: zod.string(),
   price: zod.number(),
   stock: zod.number(),
+  currentStock: zod.number(),
+  totalStockIn: zod.number(),
+  totalSold: zod.number(),
+  current_stock: zod.number(),
+  total_stock_in: zod.number(),
+  total_sold: zod.number(),
   createdAt: zod.string(),
 });
 

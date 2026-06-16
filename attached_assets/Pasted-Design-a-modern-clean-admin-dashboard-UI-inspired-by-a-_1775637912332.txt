@@ -17,7 +17,7 @@ Layout:
 
 1. Sidebar (Fixed Left):
    - Width: ~240px
-   - Logo: “SD Fashion” (bold + small icon)
+   - Logo: “Nibir Fashion” (bold + small icon)
    - Menu:
      - Dashboard (active highlight with teal background)
      - New Sale

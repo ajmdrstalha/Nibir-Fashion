@@ -10,6 +10,10 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Authentication operations
+  - name: users
+    description: User management operations
   - name: sales
     description: Sales operations
   - name: products
@@ -28,6 +32,168 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /auth/me:
+    get:
+      operationId: getCurrentUser
+      tags: [auth]
+      summary: Get current user
+      responses:
+        "200":
+          description: Current user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthUserResponse"
+        "401":
+          description: Authentication required
+
+  /auth/change-password:
+    post:
+      operationId: changeOwnPassword
+      tags: [auth]
+      summary: Change current user's password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ChangePasswordBody"
+      responses:
+        "200":
+          description: Password changed
+        "400":
+          description: Validation error
+        "401":
+          description: Authentication required
+
+  /users:
+    get:
+      operationId: listUsers
+      tags: [users]
+      summary: List users
+      responses:
+        "200":
+          description: Users
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/User"
+        "403":
+          description: Forbidden
+    post:
+      operationId: createUser
+      tags: [users]
+      summary: Create user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateUserBody"
+      responses:
+        "201":
+          description: Created user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "403":
+          description: Forbidden
+
+  /users/{id}:
+    put:
+      operationId: updateUser
+      tags: [users]
+      summary: Update user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateUserBody"
+      responses:
+        "200":
+          description: Updated user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "403":
+          description: Forbidden
+
+  /users/{id}/password:
+    patch:
+      operationId: updateUserPassword
+      tags: [users]
+      summary: Reset user password
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ResetUserPasswordBody"
+      responses:
+        "200":
+          description: Password updated
+        "403":
+          description: Forbidden
+
+  /users/{id}/disable:
+    patch:
+      operationId: disableUser
+      tags: [users]
+      summary: Disable user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Disabled user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "403":
+          description: Forbidden
+
+  /users/{id}/enable:
+    patch:
+      operationId: enableUser
+      tags: [users]
+      summary: Enable user
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Enabled user
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "403":
+          description: Forbidden
 
   /sales:
     get:
@@ -158,6 +324,67 @@ paths:
         "404":
           description: Not found
 
+  /products/{id}/stock-in:
+    post:
+      operationId: stockInProduct
+      tags: [products]
+      summary: Add stock to a product
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/StockInBody"
+      responses:
+        "201":
+          description: Updated product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Product"
+
+  /products/{id}/stock-movements:
+    get:
+      operationId: listProductStockMovements
+      tags: [products]
+      summary: List stock movements for one product
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Stock movements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StockMovement"
+
+  /stock-movements:
+    get:
+      operationId: listStockMovements
+      tags: [products]
+      summary: List all stock movements
+      responses:
+        "200":
+          description: Stock movements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/StockMovement"
+
   /products:
     get:
       operationId: listProducts
@@ -244,6 +471,124 @@ components:
       required:
         - status
 
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+          enum: [admin, user]
+        active:
+          type: boolean
+        createdAt:
+          type: string
+      required:
+        - id
+        - email
+        - name
+        - role
+        - active
+        - createdAt
+
+    AuthUserResponse:
+      type: object
+      properties:
+        user:
+          $ref: "#/components/schemas/CurrentUser"
+      required:
+        - user
+
+    CurrentUser:
+      type: object
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+          enum: [admin, user]
+        active:
+          type: boolean
+      required:
+        - id
+        - email
+        - name
+        - role
+        - active
+
+    ChangePasswordBody:
+      type: object
+      properties:
+        currentPassword:
+          type: string
+        newPassword:
+          type: string
+          minLength: 8
+        confirmPassword:
+          type: string
+          minLength: 8
+      required:
+        - currentPassword
+        - newPassword
+        - confirmPassword
+
+    CreateUserBody:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        password:
+          type: string
+          minLength: 8
+        role:
+          type: string
+          enum: [admin, user]
+        active:
+          type: boolean
+      required:
+        - name
+        - email
+        - password
+        - role
+        - active
+
+    UpdateUserBody:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+          enum: [admin, user]
+        active:
+          type: boolean
+      required:
+        - name
+        - email
+        - role
+        - active
+
+    ResetUserPasswordBody:
+      type: object
+      properties:
+        password:
+          type: string
+          minLength: 8
+      required:
+        - password
+
     SaleItem:
       type: object
       properties:
@@ -251,6 +596,8 @@ components:
           type: integer
         saleId:
           type: integer
+        productId:
+          type: ["integer", "null"]
         name:
           type: string
         size:
@@ -264,6 +611,7 @@ components:
       required:
         - id
         - saleId
+        - productId
         - name
         - size
         - qty
@@ -312,6 +660,8 @@ components:
       properties:
         name:
           type: string
+        productId:
+          type: integer
         size:
           type: string
         qty:
@@ -320,6 +670,7 @@ components:
           type: number
       required:
         - name
+        - productId
         - size
         - qty
         - rate
@@ -390,6 +741,18 @@ components:
           type: number
         stock:
           type: integer
+        currentStock:
+          type: integer
+        totalStockIn:
+          type: integer
+        totalSold:
+          type: integer
+        current_stock:
+          type: integer
+        total_stock_in:
+          type: integer
+        total_sold:
+          type: integer
         createdAt:
           type: string
       required:
@@ -399,6 +762,12 @@ components:
         - size
         - price
         - stock
+        - currentStock
+        - totalStockIn
+        - totalSold
+        - current_stock
+        - total_stock_in
+        - total_sold
         - createdAt
 
     CreateProductBody:
@@ -420,3 +789,53 @@ components:
         - size
         - price
         - stock
+
+    StockInBody:
+      type: object
+      properties:
+        quantity:
+          type: integer
+        note:
+          type: ["string", "null"]
+      required:
+        - quantity
+
+    StockMovement:
+      type: object
+      properties:
+        id:
+          type: integer
+        productId:
+          type: integer
+        productName:
+          type: string
+        type:
+          type: string
+          enum: [IN, OUT]
+        quantity:
+          type: integer
+        reason:
+          type: string
+          enum: [purchase, sale, adjustment, return, manual]
+        saleId:
+          type: ["integer", "null"]
+        createdBy:
+          type: ["integer", "null"]
+        createdByEmail:
+          type: ["string", "null"]
+        note:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+      required:
+        - id
+        - productId
+        - productName
+        - type
+        - quantity
+        - reason
+        - saleId
+        - createdBy
+        - createdByEmail
+        - note
+        - createdAt
