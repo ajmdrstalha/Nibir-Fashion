@@ -115,11 +115,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const restoreInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
-  const apiBase = window.location.protocol === "file:"
-    ? "http://127.0.0.1:12501"
-    : import.meta.env.VITE_API_BASE_URL
-      ? String(import.meta.env.VITE_API_BASE_URL).replace(/\/+$/, "")
-      : "";
+  const apiBase = import.meta.env.VITE_API_BASE_URL
+    ? String(import.meta.env.VITE_API_BASE_URL).replace(/\/+$/, "")
+    : "";
 
   const pageTitle = navItems.find(n => n.path === location)?.label ?? "Dashboard";
 

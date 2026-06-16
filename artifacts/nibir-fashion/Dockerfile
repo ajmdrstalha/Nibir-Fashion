@@ -15,10 +15,12 @@ COPY attached_assets ./attached_assets
 
 RUN pnpm install --frozen-lockfile --ignore-scripts
 
+ARG VITE_API_BASE_URL=http://98.70.41.172:12501
+
 ENV NODE_ENV=development
 ENV PORT=12500
 ENV API_TARGET=http://backend:12501
-ENV VITE_API_BASE_URL=http://localhost:12501
+ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 
 EXPOSE 12500
 

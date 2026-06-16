@@ -42,13 +42,15 @@ services:
     build:
       context: .
       dockerfile: artifacts/nibir-fashion/Dockerfile
+      args:
+        VITE_API_BASE_URL: http://98.70.41.172:12501
     container_name: nibir-fashion-frontend
     restart: unless-stopped
     environment:
       NODE_ENV: development
       PORT: 12500
       API_TARGET: http://backend:12501
-      VITE_API_BASE_URL: http://localhost:12501
+      VITE_API_BASE_URL: http://98.70.41.172:12501
     ports:
       - "${FRONTEND_PORT:-12500}:12500"
     depends_on:

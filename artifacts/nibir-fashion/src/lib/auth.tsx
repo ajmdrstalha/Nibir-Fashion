@@ -16,10 +16,8 @@ type AuthContextValue = {
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
-const apiBase = typeof window !== "undefined" && window.location.protocol === "file:"
-  ? "http://127.0.0.1:12501"
-  : import.meta.env.VITE_API_BASE_URL
-    ? String(import.meta.env.VITE_API_BASE_URL).replace(/\/+$/, "")
+const apiBase = import.meta.env.VITE_API_BASE_URL
+  ? String(import.meta.env.VITE_API_BASE_URL).replace(/\/+$/, "")
   : "";
 
 async function authFetch<T>(path: string, init?: RequestInit): Promise<T> {

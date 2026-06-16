@@ -42,6 +42,22 @@ Open:
 - Backend health check: http://localhost:12501/api/healthz
 - PostgreSQL: `localhost:12502`
 
+## Azure Deployment API URL
+
+For the Azure VM deployment, the frontend must call the public backend URL, not `localhost`, because browser requests run on the user's machine. `docker-compose.yml` passes this value into the frontend as both a Docker build argument and container environment variable:
+
+```text
+VITE_API_BASE_URL=http://98.70.41.172:12501
+```
+
+With the deployed frontend at `http://98.70.41.172:12500`, login requests should go to:
+
+```text
+http://98.70.41.172:12501/api/auth/login
+```
+
+If you deploy to a different VM/IP later, update `VITE_API_BASE_URL` in `docker-compose.yml` and rebuild the frontend image.
+
 Stop containers:
 
 ```powershell
