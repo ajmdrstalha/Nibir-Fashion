@@ -182,8 +182,8 @@ export default function Settings() {
     <div className="max-w-6xl mx-auto space-y-5">
       <section className="bg-card border border-card-border rounded-2xl shadow-sm p-4 sm:p-6">
         <div className="flex items-center gap-3 mb-5">
-          <div className="w-10 h-10 rounded-xl bg-[hsl(174,72%,56%)] flex items-center justify-center">
-            <Shield className="w-5 h-5 text-[hsl(218,45%,12%)]" />
+          <div className="w-10 h-10 rounded-xl bg-[hsl(45,65%,52%)] flex items-center justify-center">
+            <Shield className="w-5 h-5 text-black" />
           </div>
           <div>
             <h2 className="text-base font-bold text-foreground">Profile</h2>
@@ -209,7 +209,7 @@ export default function Settings() {
 
       <section className="bg-card border border-card-border rounded-2xl shadow-sm p-4 sm:p-6">
         <div className="flex items-center gap-3 mb-5">
-          <KeyRound className="w-5 h-5 text-[hsl(174,72%,40%)]" />
+          <KeyRound className="w-5 h-5 text-[hsl(45,65%,52%)]" />
           <h2 className="text-base font-bold text-foreground">Change Password</h2>
         </div>
 
@@ -238,7 +238,7 @@ export default function Settings() {
       {isAdmin && (
         <section className="bg-card border border-card-border rounded-2xl shadow-sm overflow-hidden">
           <div className="px-4 sm:px-6 py-4 border-b border-border flex items-center gap-3">
-            <UserCog className="w-5 h-5 text-[hsl(174,72%,40%)]" />
+            <UserCog className="w-5 h-5 text-[hsl(45,65%,52%)]" />
             <div>
               <h2 className="text-base font-bold text-foreground">User Management</h2>
               <p className="text-sm text-muted-foreground">Create staff accounts and manage access</p>

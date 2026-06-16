@@ -103,19 +103,19 @@ function ProductFormModal({
         <div className="space-y-4">
           <div>
             <label className="text-xs font-medium text-muted-foreground block mb-1">Product Name *</label>
-            <input type="text" value={form.name} onChange={e => onChange({ ...form, name: e.target.value })} placeholder="e.g. Cotton Shirt" data-testid="input-product-name" className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(174,72%,40%)] transition" />
+            <input type="text" value={form.name} onChange={e => onChange({ ...form, name: e.target.value })} placeholder="e.g. Cotton Shirt" data-testid="input-product-name" className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(45,65%,52%)] transition" />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="text-xs font-medium text-muted-foreground block mb-1">Category</label>
-              <select value={form.category} onChange={e => onChange({ ...form, category: e.target.value })} data-testid="select-product-category" className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(174,72%,40%)] transition">
+              <select value={form.category} onChange={e => onChange({ ...form, category: e.target.value })} data-testid="select-product-category" className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(45,65%,52%)] transition">
                 {CATEGORIES.map(c => <option key={c}>{c}</option>)}
               </select>
             </div>
             <div>
               <label className="text-xs font-medium text-muted-foreground block mb-1">Size</label>
-              <select value={form.size} onChange={e => onChange({ ...form, size: e.target.value })} data-testid="select-product-size" className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(174,72%,40%)] transition">
+              <select value={form.size} onChange={e => onChange({ ...form, size: e.target.value })} data-testid="select-product-size" className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(45,65%,52%)] transition">
                 {SIZES.map(s => <option key={s} value={s}>{s}</option>)}
               </select>
             </div>
@@ -124,17 +124,17 @@ function ProductFormModal({
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
               <label className="text-xs font-medium text-muted-foreground block mb-1">Selling Price (BDT) *</label>
-              <input type="number" min={0} value={form.price} onChange={e => onChange({ ...form, price: e.target.value })} placeholder="0" data-testid="input-product-price" className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(174,72%,40%)] transition" />
+              <input type="number" min={0} value={form.price} onChange={e => onChange({ ...form, price: e.target.value })} placeholder="0" data-testid="input-product-price" className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(45,65%,52%)] transition" />
             </div>
             <div>
               <label className="text-xs font-medium text-muted-foreground block mb-1">{isEdit ? "Current Stock" : "Opening Stock"} *</label>
-              <input type="number" min={0} value={form.stock} onChange={e => onChange({ ...form, stock: e.target.value })} disabled={isEdit} placeholder="0" data-testid="input-product-stock" className="w-full px-3 py-2 rounded-xl border border-input bg-background disabled:bg-muted text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(174,72%,40%)] transition" />
+              <input type="number" min={0} value={form.stock} onChange={e => onChange({ ...form, stock: e.target.value })} disabled={isEdit} placeholder="0" data-testid="input-product-stock" className="w-full px-3 py-2 rounded-xl border border-input bg-background disabled:bg-muted text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(45,65%,52%)] transition" />
             </div>
           </div>
         </div>
 
         <div className="flex flex-col-reverse sm:flex-row gap-3 mt-6">
-          <button onClick={onSave} disabled={saving || !form.name.trim()} data-testid="button-save-product" className="flex-1 py-2.5 rounded-xl bg-[hsl(174,72%,40%)] hover:bg-[hsl(174,72%,34%)] disabled:opacity-60 text-white font-semibold text-sm transition-colors">
+          <button onClick={onSave} disabled={saving || !form.name.trim()} data-testid="button-save-product" className="flex-1 py-2.5 rounded-xl bg-[hsl(45,65%,52%)] hover:bg-[hsl(43,89%,38%)] disabled:opacity-60 text-black hover:text-white font-semibold text-sm transition-colors">
             {saving ? "Saving..." : "Save Product"}
           </button>
           <button onClick={onClose} className="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-foreground font-semibold text-sm transition-colors">Cancel</button>
@@ -178,7 +178,7 @@ function AddStockModal({
         <div className="space-y-4">
           <div>
             <label className="text-xs font-medium text-muted-foreground block mb-1">Product</label>
-            <select value={selectedProductId ?? ""} onChange={e => onSelectProduct(Number(e.target.value))} className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(174,72%,40%)]">
+            <select value={selectedProductId ?? ""} onChange={e => onSelectProduct(Number(e.target.value))} className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(45,65%,52%)]">
               <option value="" disabled>Select product</option>
               {products.map(product => (
                 <option key={product.id} value={product.id}>{product.name} - Current {currentStock(product)}</option>
@@ -187,15 +187,15 @@ function AddStockModal({
           </div>
           <div>
             <label className="text-xs font-medium text-muted-foreground block mb-1">Quantity</label>
-            <input type="number" min={1} value={quantity} onChange={e => onQuantity(e.target.value)} className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(174,72%,40%)]" />
+            <input type="number" min={1} value={quantity} onChange={e => onQuantity(e.target.value)} className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(45,65%,52%)]" />
           </div>
           <div>
             <label className="text-xs font-medium text-muted-foreground block mb-1">Note / Reference</label>
-            <textarea rows={3} value={note} onChange={e => onNote(e.target.value)} className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm text-foreground resize-none focus:outline-none focus:ring-2 focus:ring-[hsl(174,72%,40%)]" />
+            <textarea rows={3} value={note} onChange={e => onNote(e.target.value)} className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm text-foreground resize-none focus:outline-none focus:ring-2 focus:ring-[hsl(45,65%,52%)]" />
           </div>
         </div>
         <div className="flex flex-col-reverse sm:flex-row gap-3 mt-6">
-          <button onClick={onSubmit} disabled={saving || !selectedProductId || (parseInt(quantity) || 0) <= 0} className="flex-1 py-2.5 rounded-xl bg-[hsl(174,72%,40%)] hover:bg-[hsl(174,72%,34%)] disabled:opacity-60 text-white font-semibold text-sm transition-colors">
+          <button onClick={onSubmit} disabled={saving || !selectedProductId || (parseInt(quantity) || 0) <= 0} className="flex-1 py-2.5 rounded-xl bg-[hsl(45,65%,52%)] hover:bg-[hsl(43,89%,38%)] disabled:opacity-60 text-black hover:text-white font-semibold text-sm transition-colors">
             {saving ? "Adding..." : "Add Stock"}
           </button>
           <button onClick={onClose} className="w-full sm:w-auto px-5 py-2.5 rounded-xl border border-border bg-card hover:bg-muted text-foreground font-semibold text-sm transition-colors">Cancel</button>
@@ -455,10 +455,10 @@ export default function Products() {
             <div className="flex flex-col sm:flex-row sm:items-center gap-3 w-full lg:w-auto">
               <div className="relative w-full sm:w-auto">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                <input type="search" placeholder="Search products..." value={search} onChange={e => setSearch(e.target.value)} data-testid="input-search-products" className="pl-9 pr-4 py-2 sm:py-1.5 rounded-lg border border-input bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(174,72%,40%)] w-full sm:w-52 transition" />
+                <input type="search" placeholder="Search products..." value={search} onChange={e => setSearch(e.target.value)} data-testid="input-search-products" className="pl-9 pr-4 py-2 sm:py-1.5 rounded-lg border border-input bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(45,65%,52%)] w-full sm:w-52 transition" />
               </div>
               {isAdmin && (
-                <button onClick={() => openStockIn()} data-testid="button-add-stock" className="flex items-center justify-center gap-2 px-4 py-2 sm:py-1.5 rounded-lg bg-[hsl(221,83%,53%)] hover:bg-[hsl(221,83%,45%)] text-white text-sm font-semibold transition-colors w-full sm:w-auto">
+                <button onClick={() => openStockIn()} data-testid="button-add-stock" className="flex items-center justify-center gap-2 px-4 py-2 sm:py-1.5 rounded-lg bg-[hsl(45,65%,52%)] hover:bg-[hsl(43,89%,38%)] text-black hover:text-white text-sm font-semibold transition-colors w-full sm:w-auto">
                   <Plus className="w-4 h-4" />Add Stock
                 </button>
               )}
@@ -466,7 +466,7 @@ export default function Products() {
                 <History className="w-4 h-4" />History
               </button>
               {isAdmin && (
-                <button onClick={openAdd} data-testid="button-add-product" className="flex items-center justify-center gap-2 px-4 py-2 sm:py-1.5 rounded-lg bg-[hsl(174,72%,40%)] hover:bg-[hsl(174,72%,34%)] text-white text-sm font-semibold transition-colors w-full sm:w-auto">
+                <button onClick={openAdd} data-testid="button-add-product" className="flex items-center justify-center gap-2 px-4 py-2 sm:py-1.5 rounded-lg bg-[hsl(45,65%,52%)] hover:bg-[hsl(43,89%,38%)] text-black hover:text-white text-sm font-semibold transition-colors w-full sm:w-auto">
                   <Plus className="w-4 h-4" />Add Product
                 </button>
               )}
@@ -505,8 +505,8 @@ export default function Products() {
                     {isAdmin && (
                       <td className="px-5 py-3">
                         <div className="flex gap-2">
-                          <button onClick={() => openStockIn(product)} className="p-2 rounded-lg bg-[hsl(174,72%,40%)] hover:bg-[hsl(174,72%,34%)] text-white transition-colors" title="Add stock"><Plus className="w-3.5 h-3.5" /></button>
-                          <button onClick={() => openEdit(product)} data-testid={`button-edit-${product.id}`} className="p-2 rounded-lg bg-[hsl(221,83%,53%)] hover:bg-[hsl(221,83%,45%)] text-white transition-colors" title="Edit"><Pencil className="w-3.5 h-3.5" /></button>
+                          <button onClick={() => openStockIn(product)} className="p-2 rounded-lg bg-[hsl(45,65%,52%)] hover:bg-[hsl(43,89%,38%)] text-black hover:text-white transition-colors" title="Add stock"><Plus className="w-3.5 h-3.5" /></button>
+                          <button onClick={() => openEdit(product)} data-testid={`button-edit-${product.id}`} className="p-2 rounded-lg bg-[hsl(45,65%,52%)] hover:bg-[hsl(43,89%,38%)] text-black hover:text-white transition-colors" title="Edit"><Pencil className="w-3.5 h-3.5" /></button>
                           <button onClick={() => handleDelete(product.id)} disabled={deletingId === product.id} data-testid={`button-delete-${product.id}`} className="p-2 rounded-lg bg-[hsl(0,84%,55%)] hover:bg-[hsl(0,84%,48%)] disabled:opacity-50 text-white transition-colors" title="Delete"><Trash2 className="w-3.5 h-3.5" /></button>
                         </div>
                       </td>
@@ -539,8 +539,8 @@ export default function Products() {
                 </div>
                 {isAdmin && (
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                    <button onClick={() => openStockIn(product)} className="h-9 w-full flex items-center justify-center gap-1.5 rounded-lg bg-[hsl(174,72%,40%)] text-white text-xs font-semibold"><Plus className="w-4 h-4" />Stock</button>
-                    <button onClick={() => openEdit(product)} className="h-9 w-full flex items-center justify-center gap-1.5 rounded-lg bg-[hsl(221,83%,53%)] text-white text-xs font-semibold"><Pencil className="w-4 h-4" />Edit</button>
+                    <button onClick={() => openStockIn(product)} className="h-9 w-full flex items-center justify-center gap-1.5 rounded-lg bg-[hsl(45,65%,52%)] text-black text-xs font-semibold"><Plus className="w-4 h-4" />Stock</button>
+                    <button onClick={() => openEdit(product)} className="h-9 w-full flex items-center justify-center gap-1.5 rounded-lg bg-[hsl(45,65%,52%)] text-black text-xs font-semibold"><Pencil className="w-4 h-4" />Edit</button>
                     <button onClick={() => handleDelete(product.id)} disabled={deletingId === product.id} className="h-9 w-full flex items-center justify-center gap-1.5 rounded-lg bg-[hsl(0,84%,55%)] disabled:opacity-50 text-white text-xs font-semibold"><Trash2 className="w-4 h-4" />Delete</button>
                   </div>
                 )}

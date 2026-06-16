@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { LockKeyhole, Mail, ShirtIcon } from "lucide-react";
+import { LockKeyhole, Mail } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useAuth } from "@/lib/auth";
+import BrandLogo from "@/components/BrandLogo";
 
 export default function Login() {
   const { login } = useAuth();
@@ -30,9 +31,7 @@ export default function Login() {
     <main className="min-h-screen bg-background flex items-center justify-center px-4 py-8">
       <section className="w-full max-w-sm">
         <div className="mb-7 flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-[hsl(174,72%,56%)] flex items-center justify-center">
-            <ShirtIcon className="w-5 h-5 text-[hsl(218,45%,12%)]" />
-          </div>
+          <BrandLogo className="w-12 h-12 rounded-xl" />
           <div>
             <h1 className="text-xl font-bold text-foreground">Nibir Fashion</h1>
             <p className="text-sm text-muted-foreground">Billing portal sign in</p>

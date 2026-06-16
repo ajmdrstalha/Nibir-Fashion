@@ -255,7 +255,7 @@ export default function NewSale() {
             <div>
               <label className="text-xs text-muted-foreground block mb-0.5">Date</label>
               <input type="date" value={date} onChange={e => setDate(e.target.value)} data-testid="input-date"
-                className="w-full px-3 py-1.5 text-sm rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(174,72%,40%)] transition" />
+                className="w-full px-3 py-1.5 text-sm rounded-lg border border-input bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(45,65%,52%)] transition" />
             </div>
           </div>
         </div>
@@ -264,19 +264,19 @@ export default function NewSale() {
           <div>
             <label className="text-xs font-medium text-muted-foreground mb-1 block">Customer Name</label>
             <input type="text" value={customer} onChange={e => setCustomer(e.target.value)} placeholder="Customer name" data-testid="input-customer"
-              className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(174,72%,40%)] transition" />
+              className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(45,65%,52%)] transition" />
           </div>
           <div>
             <label className="text-xs font-medium text-muted-foreground mb-1 block">Customer Phone <span className="text-muted-foreground/60">(optional)</span></label>
             <input type="text" value={phone} onChange={e => setPhone(e.target.value)} placeholder="Phone number" data-testid="input-phone"
-              className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(174,72%,40%)] transition" />
+              className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(45,65%,52%)] transition" />
           </div>
         </div>
 
         <div className="mb-5">
           <label className="text-xs font-medium text-muted-foreground mb-1 block">Note</label>
           <textarea value={note} onChange={e => setNote(e.target.value)} rows={2} placeholder="+" data-testid="input-note"
-            className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(174,72%,40%)] resize-none transition" />
+            className="w-full px-3 py-2 rounded-xl border border-input bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(45,65%,52%)] resize-none transition" />
         </div>
 
         {/* Items */}
@@ -298,7 +298,7 @@ export default function NewSale() {
                   value={item.productId ?? ""}
                   onChange={e => handleProductSelect(item.id, e.target.value)}
                   data-testid={`select-product-${idx}`}
-                  className="w-full min-w-0 px-3 py-2 rounded-lg border border-input bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(174,72%,40%)] transition"
+                  className="w-full min-w-0 px-3 py-2 rounded-lg border border-input bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(45,65%,52%)] transition"
                 >
                   <option value="">— Select product —</option>
                   {productsList.map(p => (
@@ -313,7 +313,7 @@ export default function NewSale() {
                 <label>
                   <span className="md:hidden text-xs font-medium text-muted-foreground block mb-1">Size</span>
                   <select value={item.size} onChange={e => updateItem(item.id, "size", e.target.value)} data-testid={`select-size-${idx}`}
-                    className="w-full px-2 py-2 rounded-lg border border-input bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(174,72%,40%)] transition">
+                    className="w-full px-2 py-2 rounded-lg border border-input bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(45,65%,52%)] transition">
                     {SIZES.map(s => <option key={s} value={s}>{s}</option>)}
                   </select>
                 </label>
@@ -321,13 +321,13 @@ export default function NewSale() {
                 <label>
                   <span className="md:hidden text-xs font-medium text-muted-foreground block mb-1">Qty</span>
                   <input type="number" value={item.qty} min={1} onChange={e => updateItem(item.id, "qty", Math.max(1, parseInt(e.target.value) || 1))} data-testid={`input-qty-${idx}`}
-                    className="w-full px-3 py-2 rounded-lg border border-input bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(174,72%,40%)] text-center transition" />
+                    className="w-full px-3 py-2 rounded-lg border border-input bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(45,65%,52%)] text-center transition" />
                 </label>
 
                 <label className="col-span-2 md:col-span-1">
                   <span className="md:hidden text-xs font-medium text-muted-foreground block mb-1">Rate (BDT)</span>
                   <input type="number" value={item.rate || ""} min={0} placeholder="0" onChange={e => updateItem(item.id, "rate", parseFloat(e.target.value) || 0)} data-testid={`input-rate-${idx}`}
-                    className="w-full px-3 py-2 rounded-lg border border-input bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(174,72%,40%)] transition" />
+                    className="w-full px-3 py-2 rounded-lg border border-input bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(45,65%,52%)] transition" />
                 </label>
 
                 <button onClick={() => removeItem(item.id)} disabled={items.length === 1} data-testid={`button-remove-item-${idx}`}
@@ -345,7 +345,7 @@ export default function NewSale() {
           )}
 
           <button onClick={addItem} data-testid="button-add-item"
-            className="mt-3 flex w-full sm:w-auto items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-[hsl(221,83%,53%)] hover:bg-[hsl(221,83%,45%)] text-white text-sm font-semibold transition-colors">
+            className="mt-3 flex w-full sm:w-auto items-center justify-center gap-1.5 px-4 py-2 rounded-lg bg-[hsl(45,65%,52%)] hover:bg-[hsl(43,89%,38%)] text-black hover:text-white text-sm font-semibold transition-colors">
             <Plus className="w-4 h-4" />Add Item
           </button>
         </div>
@@ -357,11 +357,11 @@ export default function NewSale() {
           </div>
           <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3">
             <button onClick={handleComplete} disabled={createSale.isPending} data-testid="button-complete-sale"
-              className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[hsl(174,72%,40%)] hover:bg-[hsl(174,72%,34%)] disabled:opacity-60 text-white font-semibold text-sm transition-colors">
+              className="w-full sm:w-auto px-6 py-2.5 rounded-xl bg-[hsl(45,65%,52%)] hover:bg-[hsl(43,89%,38%)] disabled:opacity-60 text-black hover:text-white font-semibold text-sm transition-colors">
               {createSale.isPending ? "Saving..." : "Complete Sale"}
             </button>
             <button onClick={handlePrint} data-testid="button-print-bill"
-              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[hsl(221,83%,53%)] hover:bg-[hsl(221,83%,45%)] text-white font-semibold text-sm transition-colors">
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[hsl(45,65%,52%)] hover:bg-[hsl(43,89%,38%)] text-black hover:text-white font-semibold text-sm transition-colors">
               <Printer className="w-4 h-4" />Print Bill
             </button>
             <button onClick={handleClear} data-testid="button-clear"
@@ -370,7 +370,7 @@ export default function NewSale() {
             </button>
           </div>
           {savedSale && (
-            <div className="px-4 py-3 rounded-xl bg-[hsl(174,72%,94%)] dark:bg-[hsl(174,72%,20%)] border border-[hsl(174,72%,75%)] dark:border-[hsl(174,72%,35%)] text-[hsl(174,72%,28%)] dark:text-[hsl(174,72%,70%)] text-sm font-semibold">
+            <div className="px-4 py-3 rounded-xl bg-[hsl(45,65%,92%)] dark:bg-[hsl(45,50%,18%)] border border-[hsl(45,65%,70%)] dark:border-[hsl(43,89%,38%)] text-[hsl(43,89%,28%)] dark:text-[hsl(45,75%,68%)] text-sm font-semibold">
               Sale saved successfully!
             </div>
           )}
@@ -384,7 +384,7 @@ export default function NewSale() {
 
       {/* Receipt preview */}
       <div className="bg-card border border-card-border rounded-2xl shadow-sm overflow-hidden">
-        <div className="px-5 py-3.5 border-b border-border bg-[hsl(221,83%,53%)]">
+        <div className="px-5 py-3.5 border-b border-border bg-[hsl(45,65%,52%)]">
           <h3 className="text-sm font-bold text-white">Receipt Preview</h3>
         </div>
         <div className="p-4" ref={receiptRef}>

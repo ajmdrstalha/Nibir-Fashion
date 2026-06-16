@@ -39,7 +39,7 @@ function SummaryCard({ title, amount, count, icon: Icon, iconBg, isLoading }: {
     <div className="bg-card border border-card-border rounded-2xl p-4 sm:p-6 shadow-sm hover:shadow-md transition-shadow duration-200">
       <div className="flex items-start gap-4">
         <div className={`w-11 h-11 rounded-xl flex items-center justify-center flex-shrink-0 ${iconBg}`}>
-          <Icon className="w-5 h-5 text-white" />
+          <Icon className="w-5 h-5 text-black" />
         </div>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-medium text-muted-foreground mb-1">{title}</p>
@@ -105,7 +105,7 @@ function CalendarSection({ allSales }: { allSales: SaleType[] }) {
       <div className="px-5 py-4 border-b border-border">
         <div className="flex items-center justify-between">
           <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
-            <CalendarDays className="w-4 h-4 text-[hsl(221,83%,53%)]" />
+            <CalendarDays className="w-4 h-4 text-[hsl(45,65%,52%)]" />
             Sales Calendar
           </h2>
           <div className="flex items-center gap-2">
@@ -143,22 +143,22 @@ function CalendarSection({ allSales }: { allSales: SaleType[] }) {
                 onClick={() => setSelectedDate(isSelected ? null : dateStr)}
                 className={`relative flex flex-col items-center justify-center rounded-lg py-1.5 text-xs font-medium transition-all duration-150 min-h-[44px]
                   ${isSelected
-                    ? "bg-[hsl(174,72%,40%)] text-white shadow-md"
+                    ? "bg-[hsl(45,65%,52%)] text-black shadow-md"
                     : isToday
-                      ? "bg-[hsl(221,83%,53%)] text-white"
+                      ? "bg-[hsl(45,65%,52%)] text-black"
                       : hasSales
-                        ? "bg-[hsl(174,72%,94%)] dark:bg-[hsl(174,72%,18%)] text-[hsl(174,72%,28%)] dark:text-[hsl(174,72%,70%)] hover:bg-[hsl(174,72%,85%)] dark:hover:bg-[hsl(174,72%,24%)]"
+                        ? "bg-[hsl(45,65%,92%)] dark:bg-[hsl(45,50%,16%)] text-[hsl(43,89%,28%)] dark:text-[hsl(45,75%,68%)] hover:bg-[hsl(45,65%,84%)] dark:hover:bg-[hsl(45,50%,22%)]"
                         : "text-foreground hover:bg-muted"
                   }`}
               >
                 <span>{day}</span>
                 {hasSales && !isSelected && (
-                  <span className={`text-[9px] font-bold mt-0.5 ${isToday ? "text-white/80" : "text-[hsl(174,72%,40%)] dark:text-[hsl(174,72%,60%)]"}`}>
+                  <span className={`text-[9px] font-bold mt-0.5 ${isToday ? "text-white/80" : "text-[hsl(45,65%,52%)] dark:text-[hsl(45,75%,62%)]"}`}>
                     {dayTotal >= 1000 ? `${(dayTotal / 1000).toFixed(1)}k` : dayTotal.toFixed(0)}
                   </span>
                 )}
                 {hasSales && (
-                  <span className={`absolute top-1 right-1 w-1.5 h-1.5 rounded-full ${isSelected || isToday ? "bg-white/70" : "bg-[hsl(174,72%,40%)]"}`} />
+                  <span className={`absolute top-1 right-1 w-1.5 h-1.5 rounded-full ${isSelected || isToday ? "bg-white/70" : "bg-[hsl(45,65%,52%)]"}`} />
                 )}
               </button>
             );
@@ -198,15 +198,15 @@ function CalendarSection({ allSales }: { allSales: SaleType[] }) {
         {/* Legend */}
         <div className="mt-3 flex items-center gap-4 text-[11px] text-muted-foreground">
           <div className="flex items-center gap-1.5">
-            <div className="w-3 h-3 rounded-sm bg-[hsl(221,83%,53%)]" />
+            <div className="w-3 h-3 rounded-sm bg-[hsl(45,65%,52%)]" />
             Today
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-3 h-3 rounded-sm bg-[hsl(174,72%,94%)] dark:bg-[hsl(174,72%,18%)]" />
+            <div className="w-3 h-3 rounded-sm bg-[hsl(45,65%,92%)] dark:bg-[hsl(45,50%,16%)]" />
             Has sales
           </div>
           <div className="flex items-center gap-1.5">
-            <div className="w-3 h-3 rounded-sm bg-[hsl(174,72%,40%)]" />
+            <div className="w-3 h-3 rounded-sm bg-[hsl(45,65%,52%)]" />
             Selected
           </div>
         </div>
@@ -228,11 +228,11 @@ function DailySalesReport({ sales }: { sales: SaleType[] }) {
     <div className="bg-card border border-card-border rounded-2xl shadow-sm overflow-hidden">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 px-4 sm:px-5 py-4 border-b border-border">
         <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
-          <ShoppingBag className="w-4 h-4 text-[hsl(174,72%,40%)]" />
+          <ShoppingBag className="w-4 h-4 text-[hsl(45,65%,52%)]" />
           Today's Sales Report
         </h2>
         {todaySales.length > 0 && (
-          <span className="text-sm font-extrabold text-[hsl(174,72%,40%)]">{formatBDT(total)}</span>
+          <span className="text-sm font-extrabold text-[hsl(45,65%,52%)]">{formatBDT(total)}</span>
         )}
       </div>
 
@@ -336,7 +336,7 @@ export default function Dashboard() {
           amount={todaySummary?.total ?? 0}
           count={todaySummary?.count ?? 0}
           icon={ShoppingBag}
-          iconBg="bg-[hsl(174,72%,40%)]"
+          iconBg="bg-[hsl(45,65%,52%)]"
           isLoading={todayLoading}
         />
         <SummaryCard
@@ -344,7 +344,7 @@ export default function Dashboard() {
           amount={monthSummary?.total ?? 0}
           count={monthSummary?.count ?? 0}
           icon={TrendingUp}
-          iconBg="bg-[hsl(221,83%,53%)]"
+          iconBg="bg-[hsl(45,65%,52%)]"
           isLoading={monthLoading}
         />
       </div>
@@ -364,7 +364,7 @@ export default function Dashboard() {
             <button
               onClick={() => setMonthPickerOpen(o => !o)}
               data-testid="button-month-picker"
-              className="flex w-full sm:w-auto items-center justify-center gap-2 px-4 py-2 rounded-xl bg-[hsl(174,72%,40%)] hover:bg-[hsl(174,72%,35%)] text-white text-sm font-medium transition-colors duration-150 shadow-sm"
+              className="flex w-full sm:w-auto items-center justify-center gap-2 px-4 py-2 rounded-xl bg-[hsl(45,65%,52%)] hover:bg-[hsl(43,89%,38%)] text-black hover:text-white text-sm font-medium transition-colors duration-150 shadow-sm"
             >
               <Calendar className="w-4 h-4" />
               {selectedMonthName} {selectedYear}
@@ -384,7 +384,7 @@ export default function Dashboard() {
                         data-testid={`button-month-${monthNum}`}
                         className={`px-2 py-1.5 rounded-lg text-xs font-medium transition-colors ${
                           isSelected
-                            ? "bg-[hsl(174,72%,40%)] text-white"
+                            ? "bg-[hsl(45,65%,52%)] text-black"
                             : "text-muted-foreground hover:bg-muted hover:text-foreground"
                         }`}
                       >
@@ -401,8 +401,8 @@ export default function Dashboard() {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
           <div className="bg-background border border-border rounded-xl p-5">
             <div className="flex items-start gap-3">
-              <div className="w-9 h-9 rounded-lg bg-[hsl(174,72%,94%)] dark:bg-[hsl(174,72%,20%)] flex items-center justify-center flex-shrink-0">
-                <ShoppingBag className="w-4 h-4 text-[hsl(174,72%,40%)]" />
+              <div className="w-9 h-9 rounded-lg bg-[hsl(45,65%,92%)] dark:bg-[hsl(45,50%,18%)] flex items-center justify-center flex-shrink-0">
+                <ShoppingBag className="w-4 h-4 text-[hsl(45,65%,52%)]" />
               </div>
               <div>
                 <p className="text-xs font-medium text-muted-foreground mb-1">Report Total</p>
@@ -414,8 +414,8 @@ export default function Dashboard() {
 
           <div className="bg-background border border-border rounded-xl p-5">
             <div className="flex items-start gap-3">
-              <div className="w-9 h-9 rounded-lg bg-[hsl(221,83%,94%)] dark:bg-[hsl(221,83%,20%)] flex items-center justify-center flex-shrink-0">
-                <CalendarDays className="w-4 h-4 text-[hsl(221,83%,53%)]" />
+              <div className="w-9 h-9 rounded-lg bg-[hsl(45,65%,92%)] dark:bg-[hsl(45,50%,18%)] flex items-center justify-center flex-shrink-0">
+                <CalendarDays className="w-4 h-4 text-[hsl(45,65%,52%)]" />
               </div>
               <div>
                 <p className="text-xs font-medium text-muted-foreground mb-1">Report Month</p>
@@ -457,7 +457,7 @@ export default function Dashboard() {
                 formatter={(value: number) => [formatBDT(value), "Sales"]}
                 cursor={{ fill: "hsl(var(--muted))", radius: 4 }}
               />
-              <Bar dataKey="total" fill="hsl(174,72%,40%)" radius={[6, 6, 0, 0]} maxBarSize={40} />
+              <Bar dataKey="total" fill="hsl(45,65%,52%)" radius={[6, 6, 0, 0]} maxBarSize={40} />
             </BarChart>
           </ResponsiveContainer>
           </div>

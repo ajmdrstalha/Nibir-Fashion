@@ -3,13 +3,13 @@ import { Link, useLocation } from "wouter";
 import { useTheme } from "@/components/ThemeProvider";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/lib/auth";
+import BrandLogo from "@/components/BrandLogo";
 import {
   LayoutDashboard,
   ShoppingCart,
   History,
   LogOut,
   User,
-  ShirtIcon,
   Sun,
   Moon,
   Menu,
@@ -34,18 +34,16 @@ function Sidebar({ onClose }: { onClose?: () => void }) {
   const { user, logout } = useAuth();
 
   return (
-    <aside className="flex flex-col h-full w-[min(18rem,86vw)] lg:w-64 bg-[hsl(218,45%,12%)] text-[hsl(210,40%,90%)]">
-      <div className="flex items-center justify-between px-6 py-5 border-b border-[hsl(218,45%,18%)]">
+    <aside className="flex flex-col h-full w-[min(18rem,86vw)] lg:w-64 bg-[hsl(0,0%,4%)] text-[hsl(0,0%,92%)]">
+      <div className="flex items-center justify-between px-6 py-5 border-b border-[rgba(212,175,55,0.22)]">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-[hsl(174,72%,56%)] flex items-center justify-center flex-shrink-0">
-            <ShirtIcon className="w-4.5 h-4.5 text-[hsl(218,45%,12%)]" />
-          </div>
+          <BrandLogo className="w-10 h-10 flex-shrink-0" />
           <span className="text-white font-bold text-lg tracking-tight">Nibir Fashion</span>
         </div>
         {onClose && (
           <button
             onClick={onClose}
-            className="lg:hidden p-1 rounded hover:bg-[hsl(218,45%,20%)] transition-colors"
+            className="lg:hidden p-1 rounded hover:bg-[rgba(212,175,55,0.14)] transition-colors"
             data-testid="button-close-sidebar"
           >
             <X className="w-5 h-5" />
@@ -64,35 +62,35 @@ function Sidebar({ onClose }: { onClose?: () => void }) {
               data-testid={`link-nav-${label.toLowerCase().replace(/\s+/g, "-")}`}
               className={`flex items-center gap-3 px-4 py-2.5 rounded-lg transition-all duration-150 group
                 ${isActive
-                  ? "bg-[hsl(218,45%,20%)] text-white border-l-3 border-[hsl(174,72%,56%)]"
-                  : "text-[hsl(210,40%,75%)] hover:bg-[hsl(218,45%,18%)] hover:text-white"
+                  ? "bg-[rgba(212,175,55,0.16)] text-white border-l-3 border-[hsl(45,65%,52%)]"
+                  : "text-[hsl(0,0%,74%)] hover:bg-[rgba(212,175,55,0.10)] hover:text-white"
                 }`}
             >
-              <Icon className={`w-5 h-5 flex-shrink-0 transition-colors ${isActive ? "text-[hsl(174,72%,56%)]" : "text-[hsl(210,40%,60%)] group-hover:text-[hsl(174,72%,56%)]"}`} />
+              <Icon className={`w-5 h-5 flex-shrink-0 transition-colors ${isActive ? "text-[hsl(45,65%,52%)]" : "text-[hsl(0,0%,58%)] group-hover:text-[hsl(45,65%,52%)]"}`} />
               <span className="text-sm font-medium">{label}</span>
               {isActive && (
-                <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[hsl(174,72%,56%)]" />
+                <div className="ml-auto w-1.5 h-1.5 rounded-full bg-[hsl(45,65%,52%)]" />
               )}
             </Link>
           );
         })}
       </nav>
 
-      <div className="px-3 pb-5 space-y-2 border-t border-[hsl(218,45%,18%)] pt-4">
+      <div className="px-3 pb-5 space-y-2 border-t border-[rgba(212,175,55,0.22)] pt-4">
         <button
           onClick={toggleTheme}
           data-testid="button-toggle-theme"
-          className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-[hsl(210,40%,75%)] hover:bg-[hsl(218,45%,18%)] hover:text-white transition-all duration-150 text-sm font-medium"
+          className="w-full flex items-center gap-3 px-4 py-2.5 rounded-lg text-[hsl(0,0%,74%)] hover:bg-[rgba(212,175,55,0.10)] hover:text-white transition-all duration-150 text-sm font-medium"
         >
           {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
           {theme === "dark" ? "Light Mode" : "Dark Mode"}
         </button>
 
         <div className="flex items-center gap-3 px-4 py-2.5">
-          <div className="w-7 h-7 rounded-full bg-[hsl(174,72%,56%)] flex items-center justify-center flex-shrink-0">
-            <User className="w-3.5 h-3.5 text-[hsl(218,45%,12%)]" />
+          <div className="w-7 h-7 rounded-full bg-[hsl(45,65%,52%)] flex items-center justify-center flex-shrink-0">
+            <User className="w-3.5 h-3.5 text-black" />
           </div>
-          <span className="text-sm text-[hsl(210,40%,80%)] font-medium flex-1 truncate">
+          <span className="text-sm text-[hsl(0,0%,82%)] font-medium flex-1 truncate">
             {user?.email ?? "admin"}
           </span>
         </div>
@@ -209,6 +207,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             >
               <Menu className="w-5 h-5 text-foreground" />
             </button>
+            <BrandLogo className="hidden sm:flex w-9 h-9 rounded-lg" />
             <h1 className="text-base sm:text-xl font-bold text-foreground truncate" data-testid="text-page-title">{pageTitle}</h1>
           </div>
           <div className="hidden sm:flex items-center gap-3 flex-shrink-0">

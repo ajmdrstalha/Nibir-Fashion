@@ -124,12 +124,12 @@ export default function SalesHistory() {
               <div className="relative w-full sm:w-auto">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input type="search" placeholder="Search..." value={search} onChange={e => { setSearch(e.target.value); setPage(1); }} data-testid="input-search"
-                  className="pl-9 pr-4 py-2 sm:py-1.5 rounded-lg border border-input bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(174,72%,40%)] w-full sm:w-52 transition" />
+                  className="pl-9 pr-4 py-2 sm:py-1.5 rounded-lg border border-input bg-background text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(45,65%,52%)] w-full sm:w-52 transition" />
               </div>
               <div className="relative w-full sm:w-auto">
                 <CalendarDays className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                 <input type="date" value={selectedDate} onChange={e => { setSelectedDate(e.target.value); setPage(1); }} data-testid="input-date-filter"
-                  className="pl-9 pr-3 py-2 sm:py-1.5 rounded-lg border border-input bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(174,72%,40%)] w-full sm:w-44 transition" />
+                  className="pl-9 pr-3 py-2 sm:py-1.5 rounded-lg border border-input bg-background text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[hsl(45,65%,52%)] w-full sm:w-44 transition" />
               </div>
             </div>
           </div>
@@ -176,7 +176,7 @@ export default function SalesHistory() {
                       <td className="px-5 py-3 text-sm text-muted-foreground">{formatDate(sale.date)}</td>
                       <td className="px-5 py-3">
                         <button onClick={() => setViewing(sale as SaleType)} data-testid={`button-view-${sale.id}`}
-                          className="px-4 py-1.5 rounded-lg bg-[hsl(221,83%,53%)] hover:bg-[hsl(221,83%,45%)] text-white text-xs font-semibold transition-colors">
+                          className="px-4 py-1.5 rounded-lg bg-[hsl(45,65%,52%)] hover:bg-[hsl(43,89%,38%)] text-black hover:text-white text-xs font-semibold transition-colors">
                           View
                         </button>
                       </td>
@@ -213,7 +213,7 @@ export default function SalesHistory() {
                       </div>
                       <span className="block text-sm font-bold text-foreground">{formatBDT(sale.total)}</span>
                     </div>
-                    <button onClick={() => setViewing(sale as SaleType)} className="w-full h-9 rounded-lg bg-[hsl(221,83%,53%)] text-white text-xs font-semibold">
+                    <button onClick={() => setViewing(sale as SaleType)} className="w-full h-9 rounded-lg bg-[hsl(45,65%,52%)] text-black text-xs font-semibold">
                       View Details
                     </button>
                   </div>
