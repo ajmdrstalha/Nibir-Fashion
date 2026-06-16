@@ -125,6 +125,10 @@ Settings is available to every signed-in user. Users can view their profile and 
 
 Product Inventory is visible to both admin and staff users. Admin users can add products, edit products, delete products, add stock, and view stock movement history. Staff users can view products, stock totals, and stock movement history only; product and stock mutation API calls return `403 Forbidden` for staff users.
 
+## Backup And Restore
+
+Use the header Backup button to export a JSON file for the current PostgreSQL web data. Restore accepts the same generated JSON format and restores users, products, sales, sale items, stock movements, and an empty `settings` collection placeholder inside one PostgreSQL transaction. If restore validation fails, the backend logs the detailed reason and the frontend toast shows the server error message.
+
 For direct local development outside Docker, run PostgreSQL first, then:
 
 ```powershell

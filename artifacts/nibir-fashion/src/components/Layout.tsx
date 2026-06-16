@@ -165,10 +165,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         body: JSON.stringify(payload),
       });
 
-      if (!response.ok) throw new Error("Restore failed");
+      const result = await response.json().catch(() => null);
+      if (!response.ok) {
+        const message = result && typeof result.error === "string" ? result.error : "Restore failed";
+        throw new Error(message);
+      }
+
       toast({ title: "Backup restored", description: "Refresh the page to load restored data." });
-    } catch {
-      toast({ title: "Restore failed", description: "Invalid backup file or server error." });
+    } catch (error) {
+      toast({
+        title: "Restore failed",
+        description: error instanceof Error ? error.message : "Invalid backup file or server error.",
+        variant: "destructive",
+      });
     }
   }
 
