@@ -172,11 +172,11 @@ function CalendarSection({ allSales }: { allSales: SaleType[] }) {
               <div>
                 <p className="text-base font-extrabold text-foreground">{selectedDate}</p>
                 <div className="mt-2 inline-flex flex-wrap items-center gap-2">
-                  <span className="text-base font-extrabold text-[hsl(45,82%,72%)]">
+                  <span className="text-base font-extrabold text-[hsl(43,89%,28%)] dark:text-[hsl(45,82%,72%)]">
                     {selectedSales.length} sale{selectedSales.length !== 1 ? "s" : ""}
                   </span>
                   <span className="h-1.5 w-1.5 rounded-full bg-[hsl(45,65%,52%)]" />
-                  <span className="text-lg sm:text-xl font-black text-white">{formatBDT(selectedTotal)}</span>
+                  <span className="text-lg sm:text-xl font-black text-foreground dark:text-white">{formatBDT(selectedTotal)}</span>
                 </div>
               </div>
               <button onClick={() => setSelectedDate(null)} className="p-1.5 rounded-lg hover:bg-muted text-muted-foreground hover:text-foreground transition-colors">
